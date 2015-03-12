@@ -29,7 +29,7 @@ angular.module('notely.notes', ['ngRoute'])
   };
 
   $scope.loadNote = function(note) {
-    $scope.note = note;
+    $scope.note = JSON.parse(JSON.stringify(note));
   };
 
   $scope.findNote = function(noteId) {
@@ -63,6 +63,8 @@ angular.module('notely.notes', ['ngRoute'])
       note: noteData
     }).success(function(newNoteData) {
       notes.push(newNoteData);
+      noteData.title='';
+      noteData.body_html='';
     });
   };
 }]);
