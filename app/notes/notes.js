@@ -13,17 +13,34 @@ angular.module('notely.notes', ['ngRoute'])
 }])
 
 .controller('NotesController', ['$scope', 'NotesBackend', function($scope, NotesBackend) {
+
   NotesBackend.fetchNotes();
 
   $scope.notes = function() {
     return NotesBackend.getNotes();
   };
 
+  $scope.hasNotes = function() {
+    return $scope.notes().length > 0;
+  };
+
   $scope.commit = function() {
     NotesBackend.postNote($scope.note);
-    $scope.note.title = '';
-    $scope.note.body = '';
   };
+
+  $scope.loadNote = function(note) {
+    $scope.note = note;
+  };
+
+  $scope.findNote = function(noteId) {
+    var notes = $scope.notes();
+    for (var i= 0; i < notes.length; i++) {
+      if (notes[i].id === noteId) {
+        return notes[i];
+      }
+    }
+  };
+
 }])
 
 .service('NotesBackend', ['$http', function($http) {
@@ -40,12 +57,12 @@ angular.module('notely.notes', ['ngRoute'])
       });
   };
 
-  this.postNote = function(note_data) {
+  this.postNote = function(noteData) {
     $http.post(notelyBasePath + 'notes', {
       api_key: apiKey,
-      note: note_data
-    }).success(function(new_note_data) {
-      notes.push(new_note_data);
+      note: noteData
+    }).success(function(newNoteData) {
+      notes.push(newNoteData);
     });
   };
 }]);

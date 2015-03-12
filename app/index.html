@@ -18,7 +18,6 @@
   <script src="bower_components/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js"></script>
 </head>
 <body ng-controller="NotesController">
-
   <div class="container wrap">
     <div class="row">
       <div class="col-xs-12">
@@ -29,25 +28,14 @@
     </div>
     <div class="container">
       <div class="row">
-        <div class="col-xs-4">
-          <nav id="sidebar">
-            <div class="well">
-              SIDEBAR
-              <ul>
-                <li ng-repeat="note in notes()">
-                  {{ note.title }}
-                </li>
-              </ul>
-            </div>
-          </nav>
-        </div>
+        <div class="col-xs-4" ng-include="'sidebar.html'"></div>
         <div class="col-xs-8">
           <main>
-            <div class="well">
+
               <!-- BEGIN main content -->
               <div ng-view></div>
               <!-- END main content -->
-            </div>
+            
           </main>
         </div>
       </div>
