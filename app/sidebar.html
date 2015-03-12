@@ -1,6 +1,6 @@
 <nav id="sidebar">
   <ul id="notes" ng-show"hasNotes()">
-    <li id="note{{ note.id }}" ng-repeat="note in notes() | limitTo: 10 | orderBy: '-id'" ng-click="loadNote(note)">
+    <li id="note{{ note.id }}" ng-repeat="note in notes() | orderBy: '-id' | limitTo: 10" ng-click="loadNote(note)">
       <div class="note-title">{{ note.title }}</div>
       <div class="note-body">{{ note.body_text }}</div>
     </li>
