@@ -2,16 +2,17 @@
 
 var notelyBasePath = 'https://elevennote-nov-2014.herokuapp.com/api/v1/';
 var apiKey = '$2a$10$mDt9tMv4Qc2A5GAO6uS8b.f3SfpxjMgkF/t9IW2eXdPFPsV5LnAZ.';
-var noteModule = angular.module('notely.notes', ['ngRoute']);
 
-noteModule.config(['$routeProvider', function($routeProvider) {
+angular.module('notely.notes', ['ngRoute'])
+
+.config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/notes', {
     templateUrl: 'notes/notes.html',
     controller: 'NotesController'
   });
-}]);
+}])
 
-noteModule.controller('NotesController', ['$http', '$scope', 'NotesBackend', function($http, $scope, NotesBackend) {
+.controller('NotesController', ['$http', '$scope', 'NotesBackend', function($http, $scope, NotesBackend) {
   NotesBackend.fetchNotes();
 
   $scope.notes = function() {
@@ -24,9 +25,9 @@ noteModule.controller('NotesController', ['$http', '$scope', 'NotesBackend', fun
       body_html: $scope.noteBody
     });
   };
-}]);
+}])
 
-noteModule.service('NotesBackend', ['$http', function($http) {
+.service('NotesBackend', ['$http', function($http) {
   var notes = [];
 
   this.getNotes = function() {
