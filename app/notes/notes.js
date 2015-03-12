@@ -24,6 +24,8 @@ angular.module('notely.notes', ['ngRoute'])
       title: $scope.noteTitle,
       body_html: $scope.noteBody
     });
+    $scope.noteTitle = '';
+    $scope.noteBody = '';
   };
 }])
 
