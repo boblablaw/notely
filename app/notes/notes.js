@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp.notes', ['ngRoute'])
+angular.module('notely.notes', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/notes', {
