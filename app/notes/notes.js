@@ -12,7 +12,7 @@ angular.module('notely.notes', ['ngRoute'])
   });
 }])
 
-.controller('NotesController', ['$http', '$scope', 'NotesBackend', function($http, $scope, NotesBackend) {
+.controller('NotesController', ['$scope', 'NotesBackend', function($scope, NotesBackend) {
   NotesBackend.fetchNotes();
 
   $scope.notes = function() {
@@ -20,12 +20,9 @@ angular.module('notely.notes', ['ngRoute'])
   };
 
   $scope.commit = function() {
-    NotesBackend.postNote({
-      title: $scope.noteTitle,
-      body_html: $scope.noteBody
-    });
-    $scope.noteTitle = '';
-    $scope.noteBody = '';
+    NotesBackend.postNote($scope.note);
+    $scope.note.title = '';
+    $scope.note.body = '';
   };
 }])
 
