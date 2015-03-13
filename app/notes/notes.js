@@ -24,15 +24,29 @@ angular.module('notely.notes', ['ngRoute'])
     return $scope.notes().length > 0;
   };
 
-  $scope.commit = function() {
-    NotesBackend.postNote($scope.note);
+  $scope.saveNote = function() {
+    if ($scope.note.id) {
+      NotesBackend.updateNote($scope.note);
+    } else {
+      $scope.note = NotesBackend.postNote($scope.note);
+      //TODO: keep note and set $scope.note to the persisted object
+      $scope.note = {};
+    }
   };
+
+  $scope.clearNote = function() {
+    $scope.note = '';
+  }
 
   $scope.loadNote = function(note) {
     $scope.note = JSON.parse(JSON.stringify(note));
   };
 
-  $scope.findNote = function(noteId) {
+  $scope.buttonText = function(note) {
+    return (note && note.id) ? 'Update Note' : 'Create Note';
+  };
+
+  $scope.findNoteById = function(noteId) {
     var notes = $scope.notes();
     for (var i= 0; i < notes.length; i++) {
       if (notes[i].id === noteId) {
@@ -40,11 +54,11 @@ angular.module('notely.notes', ['ngRoute'])
       }
     }
   };
-
 }])
 
 .service('NotesBackend', ['$http', function($http) {
   var notes = [];
+  var self = this;
 
   this.getNotes = function() {
     return notes;
@@ -58,13 +72,24 @@ angular.module('notely.notes', ['ngRoute'])
   };
 
   this.postNote = function(noteData) {
+    var newNote;
     $http.post(notelyBasePath + 'notes', {
       api_key: apiKey,
       note: noteData
     }).success(function(newNoteData) {
-      notes.push(newNoteData);
-      noteData.title='';
-      noteData.body_html='';
+      newNote = newNoteData;
+      notes.push(newNote);
+      noteData = '';
     });
+    return newNote;
+  };
+
+  this.updateNote = function(note) {
+    $http.put(notelyBasePath + 'notes/' + note.id, {
+      api_key: apiKey,
+      note: note})
+      .success(function(response){
+        self.fetchNotes();
+      });
   };
 }]);
