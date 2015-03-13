@@ -28,15 +28,17 @@ angular.module('notely.notes', ['ngRoute'])
     if ($scope.note.id) {
       NotesBackend.updateNote($scope.note);
     } else {
-      $scope.note = NotesBackend.postNote($scope.note);
-      //TODO: keep note and set $scope.note to the persisted object
-      $scope.note = {};
+      //Implement callback
+      NotesBackend.postNote($scope.note, function(newNote) {
+        $scope.note = JSON.parse(JSON.stringify(newNote));
+      });
     }
   };
 
   $scope.clearNote = function() {
-    $scope.note = '';
-  }
+    $scope.note = {};
+    $scope.$broadcast('noteCleared'); // implement directive
+  };
 
   $scope.loadNote = function(note) {
     $scope.note = JSON.parse(JSON.stringify(note));
@@ -71,17 +73,14 @@ angular.module('notely.notes', ['ngRoute'])
       });
   };
 
-  this.postNote = function(noteData) {
-    var newNote;
+  this.postNote = function(noteData, callback) {
     $http.post(notelyBasePath + 'notes', {
       api_key: apiKey,
       note: noteData
     }).success(function(newNoteData) {
-      newNote = newNoteData;
-      notes.push(newNote);
-      noteData = '';
+      notes.push(newNoteData);
+      callback(newNoteData);
     });
-    return newNote;
   };
 
   this.updateNote = function(note) {
