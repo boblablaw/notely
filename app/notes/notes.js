@@ -40,6 +40,12 @@ angular.module('notely.notes', ['ngRoute'])
     $scope.$broadcast('noteCleared'); // implement directive
   };
 
+  $scope.destroy = function() {
+    NotesBackend.deleteNote($scope.note, function() {
+      $scope.clearNote();
+    });
+  };
+
   $scope.loadNote = function(note) {
     $scope.note = JSON.parse(JSON.stringify(note));
   };
@@ -91,4 +97,11 @@ angular.module('notely.notes', ['ngRoute'])
         self.fetchNotes();
       });
   };
+
+  this.deleteNote = function(note, callback) {
+    $http.delete(notelyBasePath + 'notes/' + note.id + 'notes.json?api_key=' + apiKey)
+      .success(function(response) {
+        self.fetchNotes();
+      });
+    };
 }]);
