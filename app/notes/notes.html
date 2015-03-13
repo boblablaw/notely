@@ -6,7 +6,7 @@
       focus-on="noteCleared">
   </p>
   <p>
-    <textarea name="body.html" id="note_body_html" ng-model="note.body_html"></textarea>
+    <text-angular ta-toolbar="[['h1','h2','h3'],['bold','italics','underline'],['ul','ol','outdent'],['html'],['insertLink']]" name="body.html" id="note_body_html" ng-model="note.body_html"></text-angular>
   </p>
   <div class="form-action">
     <input type="submit" name="action" value="{{ buttonText(note) }}" class="btn btn-default">
